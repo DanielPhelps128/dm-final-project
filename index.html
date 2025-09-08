@@ -46,7 +46,7 @@
   <main class="wrap">
     <div class="hero">
       <span class="tag">Data/Text Mining • Solo project</span>
-      <h1>Predicting Housing Prices by Combining Structured Data and Text</h1>
+      <h1>Predicting House Prices with Machine Learning (Ames Housing)</h1>
       <div class="pill-links">
         <a href="#proposal">View Proposal</a>
         <a href="https://github.com/DanielPhelps128/dm-final-project" target="_blank">GitHub Repo</a>
@@ -57,11 +57,11 @@
     <section id="overview" class="grid">
       <div>
         <h2>Overview & Motivation</h2>
-        <p>This project evaluates whether listing descriptions (text) improve housing price prediction when combined with structured features (e.g., rooms, sqft, location). I compare linear models, tree ensembles, and simple neural networks, measuring performance with RMSE/MAE/R².</p>
+        <p>This project compares linear models, regularized models, and tree-based ensembles to predict house prices using the Ames Housing dataset. I evaluate data preprocessing choices (imputation, encoding, transformations), feature engineering, and model selection via cross-validated RMSE/MAE/R².</p>
         <ul>
-          <li>Objective: quantify the added value of text features</li>
-          <li>Scope: data cleaning, feature engineering, modeling, and interpretability</li>
-          <li>Deliverables: code, 3-page proposal, final report, slides</li>
+          <li>Objective: strong, well-calibrated price prediction on structured features</li>
+          <li>Scope: cleaning, encoding, regularization, tree ensembles, ablations, and interpretability</li>
+          <li>Deliverables: code, 3‑page proposal, progress checkpoints, final report, and slides</li>
         </ul>
       </div>
       <div>
@@ -76,38 +76,40 @@
 
     <section id="proposal">
       <h2>Proposal PDF</h2>
-      <p>Download the 3-page IEEE 2-column proposal: <a href="proposal.pdf" target="_blank"><strong>proposal.pdf</strong></a></p>
+      <p>Download the 3‑page IEEE 2‑column proposal: <a href="proposal.pdf" target="_blank"><strong>proposal.pdf</strong></a></p>
       <p><em>Tip:</em> replace this placeholder PDF with your actual proposal. Keep the file name <code>proposal.pdf</code>.</p>
     </section>
 
     <section id="dataset">
       <h2>Dataset</h2>
-      <p>Primary dataset: <a href="https://www.kaggle.com/c/house-prices-advanced-regression-techniques" target="_blank">Kaggle Housing Prices</a> (structured attributes) plus listing descriptions if available, or a comparable dataset that includes text.</p>
+      <p>Primary dataset: <a href="https://www.kaggle.com/competitions/house-prices-advanced-regression-techniques/data" target="_blank">Kaggle: House Prices — Advanced Regression Techniques</a> (Ames Housing).</p>
       <ul>
-        <li>Target: sale price</li>
-        <li>Features: rooms, lot area, neighborhood, text description</li>
-        <li>Licensing/Usage: follow dataset terms</li>
+        <li>Target: <code>SalePrice</code> (log-transformed for stability)</li>
+        <li>Features: numeric (e.g., GrLivArea, LotArea), categorical (e.g., Neighborhood), condition/quality scores</li>
+        <li>Licensing/Usage: follow Kaggle competition terms</li>
       </ul>
     </section>
 
     <section id="methods">
       <h2>Methods</h2>
       <ul>
-        <li>Preprocessing: missing-value handling, scaling, train/validation/test split</li>
-        <li>Text: tokenization, stop-word removal, TF-IDF and/or embeddings</li>
-        <li>Models: Linear/Ridge, Random Forest, XGBoost, simple MLP</li>
-        <li>Evaluation: RMSE, MAE, R²; k-fold CV</li>
-        <li>Interpretability: feature importance, SHAP (optional)</li>
+        <li>Preprocessing: imputation (median/mode), outlier handling, log transforms for skew, scaling</li>
+        <li>Encoding: target/one‑hot encoding for categoricals; rare‑label grouping</li>
+        <li>Models: OLS, Ridge/Lasso/Elastic Net, Random Forest, XGBoost/LightGBM</li>
+        <li>Evaluation: 5‑fold CV, RMSE (primary), MAE, R²; hold‑out test</li>
+        <li>Interpretability: permutation importance; SHAP for tree ensembles</li>
       </ul>
     </section>
 
     <section id="experiments">
       <h2>Planned Experiments</h2>
       <ol>
-        <li>Structured features only (baseline)</li>
-        <li>Text features only</li>
-        <li>Hybrid (structured + text)</li>
-        <li>Ablations and hyperparameter tuning</li>
+        <li>Baseline OLS on cleaned, encoded features</li>
+        <li>Regularization sweep: Ridge, Lasso, Elastic Net (tune α/λ)</li>
+        <li>Tree‑based models: Random Forest vs XGBoost/LightGBM</li>
+        <li>Feature engineering: interactions/polynomials vs none</li>
+        <li>Ablations: remove quality/condition blocks; remove neighborhood; measure ΔRMSE</li>
+        <li>Ensembling: simple averaging/stacking of best models</li>
       </ol>
     </section>
 
@@ -115,20 +117,20 @@
       <h2>Timeline</h2>
       <ul>
         <li>Week 1: data acquisition/cleaning; submit proposal</li>
-        <li>Week 2: baseline models</li>
-        <li>Week 3: text pipeline + hybrid models</li>
-        <li>Week 4: evaluation + interpretability; draft report</li>
+        <li>Week 2: baselines + regularized models</li>
+        <li>Week 3: tree ensembles + feature engineering</li>
+        <li>Week 4: evaluation, interpretation, final write‑up</li>
       </ul>
     </section>
 
     <section id="contact">
       <h2>Contact</h2>
       <p><strong>Student:</strong> Daniel Phelps</p>
-      <p><strong>Email:</strong> <a href="mailto:your.email@school.edu">your.email@school.edu</a></p>
+      <p><strong>Email:</strong> <a href="mailto:dphelps9693@floridapoly.edu">dphelps9693@floridapoly.edu</a></p>
     </section>
 
     <footer class="wrap">
-      <small>© 2025 Daniel Phelps • Course: Data/Text Mining • Hosted via GitHub Pages</small>
+      <small>© 2025 Daniel Phelps • Course: Data/Text Mining • Hosted via GitHub Pages • <a href="https://github.com/DanielPhelps128/dm-final-project" target="_blank">Repository</a> • <a href="https://DanielPhelps128.github.io/dm-final-project/" target="_blank">Webpage</a></small>
     </footer>
   </main>
 </body>
