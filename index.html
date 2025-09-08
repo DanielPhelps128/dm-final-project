@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Final Project — Data/Text Mining</title>
+  <style>
+    :root { --bg:#0f172a; --card:#111827; --ink:#e5e7eb; --muted:#9ca3af; --accent:#38bdf8; }
+    *{box-sizing:border-box}
+    html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial}
+    a{color:var(--accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+    header{position:sticky;top:0;background:rgba(15,23,42,.8);backdrop-filter:blur(6px);border-bottom:1px solid #1f2937;z-index:10}
+    nav{max-width:980px;margin:0 auto;display:flex;gap:14px;align-items:center;padding:10px 16px}
+    nav a{padding:6px 10px;border-radius:999px}
+    nav a.active, nav a:hover{background:#1f2937}
+    .wrap{max-width:980px;margin:0 auto;padding:24px 16px}
+    .hero{display:grid;gap:8px;padding:28px 0}
+    h1{font-size:clamp(24px,6vw,40px);line-height:1.2;margin:0}
+    .tag{display:inline-block;padding:4px 10px;border:1px solid #334155;border-radius:999px;color:var(--muted);font-size:14px}
+    section{margin:26px 0;padding:18px;border:1px solid #1f2937;border-radius:14px;background:var(--card)}
+    h2{margin:0 0 6px;font-size:22px}
+    ul{margin:10px 0 0 18px}
+    code{background:#0b1220;padding:2px 6px;border-radius:6px}
+    .grid{display:grid;gap:14px}
+    @media(min-width:800px){.grid{grid-template-columns:1.1fr .9fr}}
+    footer{color:var(--muted);padding:32px 0}
+    .pill-links{display:flex;flex-wrap:wrap;gap:8px}
+    .pill-links a{background:#0b1220;border:1px solid #1f2937;padding:8px 12px;border-radius:999px}
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <strong style="letter-spacing:.2px">Final Project</strong>
+      <a href="#overview" class="active">Overview</a>
+      <a href="#proposal">Proposal PDF</a>
+      <a href="#dataset">Dataset</a>
+      <a href="#methods">Methods</a>
+      <a href="#experiments">Experiments</a>
+      <a href="#timeline">Timeline</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main class="wrap">
+    <div class="hero">
+      <span class="tag">Data/Text Mining • Solo project</span>
+      <h1>Predicting Housing Prices by Combining Structured Data and Text</h1>
+      <div class="pill-links">
+        <a href="#proposal">View Proposal</a>
+        <a href="https://github.com/DanielPhelps128/dm-final-project" target="_blank">GitHub Repo</a>
+        <a href="#dataset">Dataset</a>
+      </div>
+    </div>
+
+    <section id="overview" class="grid">
+      <div>
+        <h2>Overview & Motivation</h2>
+        <p>This project evaluates whether listing descriptions (text) improve housing price prediction when combined with structured features (e.g., rooms, sqft, location). I compare linear models, tree ensembles, and simple neural networks, measuring performance with RMSE/MAE/R².</p>
+        <ul>
+          <li>Objective: quantify the added value of text features</li>
+          <li>Scope: data cleaning, feature engineering, modeling, and interpretability</li>
+          <li>Deliverables: code, 3-page proposal, final report, slides</li>
+        </ul>
+      </div>
+      <div>
+        <h2>Quick Links</h2>
+        <ul>
+          <li><a href="#proposal">Project proposal (PDF)</a></li>
+          <li><a href="#methods">Modeling methods</a></li>
+          <li><a href="#experiments">Planned experiments</a></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="proposal">
+      <h2>Proposal PDF</h2>
+      <p>Download the 3-page IEEE 2-column proposal: <a href="proposal.pdf" target="_blank"><strong>proposal.pdf</strong></a></p>
+      <p><em>Tip:</em> replace this placeholder PDF with your actual proposal. Keep the file name <code>proposal.pdf</code>.</p>
+    </section>
+
+    <section id="dataset">
+      <h2>Dataset</h2>
+      <p>Primary dataset: <a href="https://www.kaggle.com/c/house-prices-advanced-regression-techniques" target="_blank">Kaggle Housing Prices</a> (structured attributes) plus listing descriptions if available, or a comparable dataset that includes text.</p>
+      <ul>
+        <li>Target: sale price</li>
+        <li>Features: rooms, lot area, neighborhood, text description</li>
+        <li>Licensing/Usage: follow dataset terms</li>
+      </ul>
+    </section>
+
+    <section id="methods">
+      <h2>Methods</h2>
+      <ul>
+        <li>Preprocessing: missing-value handling, scaling, train/validation/test split</li>
+        <li>Text: tokenization, stop-word removal, TF-IDF and/or embeddings</li>
+        <li>Models: Linear/Ridge, Random Forest, XGBoost, simple MLP</li>
+        <li>Evaluation: RMSE, MAE, R²; k-fold CV</li>
+        <li>Interpretability: feature importance, SHAP (optional)</li>
+      </ul>
+    </section>
+
+    <section id="experiments">
+      <h2>Planned Experiments</h2>
+      <ol>
+        <li>Structured features only (baseline)</li>
+        <li>Text features only</li>
+        <li>Hybrid (structured + text)</li>
+        <li>Ablations and hyperparameter tuning</li>
+      </ol>
+    </section>
+
+    <section id="timeline">
+      <h2>Timeline</h2>
+      <ul>
+        <li>Week 1: data acquisition/cleaning; submit proposal</li>
+        <li>Week 2: baseline models</li>
+        <li>Week 3: text pipeline + hybrid models</li>
+        <li>Week 4: evaluation + interpretability; draft report</li>
+      </ul>
+    </section>
+
+    <section id="contact">
+      <h2>Contact</h2>
+      <p><strong>Student:</strong> Daniel Phelps</p>
+      <p><strong>Email:</strong> <a href="mailto:your.email@school.edu">your.email@school.edu</a></p>
+    </section>
+
+    <footer class="wrap">
+      <small>© 2025 Daniel Phelps • Course: Data/Text Mining • Hosted via GitHub Pages</small>
+    </footer>
+  </main>
+</body>
+</html>
