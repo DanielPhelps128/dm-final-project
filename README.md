@@ -7,7 +7,7 @@
 **Repo:** https://github.com/DanielPhelps128/dm-final-project
 
 ## Project in one sentence
-Explain what drives higher vs. lower home prices using course techniques: **EDA/visualization**, **PCA & t-SNE**, **clustering**, **association rules**, and simple **anomaly checks** (with **TF-IDF + sentiment** if listing text is approved).
+Explain what drives higher vs. lower home prices using course techniques: **EDA/visualization**, **PCA & t-SNE**, **clustering**, and **association rules**.
 
 ---
 
