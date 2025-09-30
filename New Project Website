@@ -5,51 +5,74 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>DM Final Project — Daniel Phelps</title>
   <style>
-    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;line-height:1.5;margin:2rem;max-width:880px}
-    header h1{margin:0 0 .25rem 0}
-    header p{margin:.25rem 0;color:#555}
-    .tag{background:#eef;border:1px solid #ccd;padding:.1rem .4rem;border-radius:.4rem;font-size:.85rem}
-    h2{margin-top:2rem}
-    ul{margin:.5rem 0 1.25rem 1.25rem}
-    a{color:#0645ad;text-decoration:none}
-    a:hover{text-decoration:underline}
-    footer{margin-top:2rem;color:#666;font-size:.9rem}
+    :root { --ink:#0a0a0a; --sub:#555; --bg:#fff; --tag:#eef; --tagbd:#ccd; }
+    html,body { background:var(--bg); color:var(--ink); font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; }
+    main { max-width: 900px; margin: 2rem auto; padding: 0 1rem; line-height: 1.55; }
+    header h1 { margin: 0 0 .25rem 0; }
+    header p { margin: .25rem 0; color: var(--sub); }
+    .chip { display:inline-block; margin-right:.4rem; padding:.1rem .5rem; background:var(--tag); border:1px solid var(--tagbd); border-radius:.5rem; font-size:.9rem; }
+    h2 { margin-top: 1.75rem; }
+    ul { margin: .4rem 0 1.1rem 1.2rem; }
+    a { color:#0645ad; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    footer { margin-top:2rem; color:var(--sub); font-size:.9rem; }
+    code { background:#f6f8fa; padding:.05rem .3rem; border-radius:.25rem; }
   </style>
 </head>
 <body>
+<main>
   <header>
     <h1>Predicting Housing Prices with Course Methods</h1>
     <p><strong>Author:</strong> Daniel Phelps &middot; <a href="mailto:dphelps9693@floridapoly.edu">dphelps9693@floridapoly.edu</a></p>
     <p>
-      <a class="tag" href="https://github.com/DanielPhelps128/dm-final-project" target="_blank" rel="noopener">GitHub Repo</a>
-      <!-- If you renamed the file to proposal.pdf, keep the first link; otherwise comment it and use the second. -->
-      <a class="tag" href="proposal.pdf" target="_blank" rel="noopener">Proposal (PDF)</a>
-      <!-- <a class="tag" href="Data%20Mining%20Project%20Proposal%20Daniel%20Phelps.pdf" target="_blank" rel="noopener">Proposal (PDF)</a> -->
+      <a class="chip" href="https://github.com/DanielPhelps128/dm-final-project" target="_blank" rel="noopener">GitHub Repo</a>
+      <!-- Proposal link: keep this line if your file name has spaces -->
+      <a class="chip" href="Data%20Mining%20Project%20Proposal%20Daniel%20Phelps.pdf" target="_blank" rel="noopener">Proposal (PDF)</a>
+      <!-- If you rename the file to 'proposal.pdf', use this instead:
+      <a class="chip" href="proposal.pdf" target="_blank" rel="noopener">Proposal (PDF)</a> -->
     </p>
   </header>
 
-  <h2>Project Summary</h2>
+  <h2>Project Summary (Updated)</h2>
   <p>
-    This project uses the Ames Housing dataset to (1) run EDA and visualizations; (2) reduce dimensions with PCA;
-    (3) segment the market with k-means; and (4) mine association rules on discretized features to explain
-    <em>Low/Medium/High</em> price bands. The focus is on clarity and course-aligned methods.
+    This project uses the Ames Housing dataset to <strong>(1)</strong> run EDA and clear visualizations,
+    <strong>(2)</strong> reduce dimensions with PCA for structure and feature insight,
+    <strong>(3)</strong> segment the market with k-means (choosing <em>K</em> by average silhouette),
+    and <strong>(4)</strong> mine association rules on discretized features to explain
+    <em>Low/Medium/High</em> price bands. The scope is intentionally trimmed—no complex prediction
+    models—so the analysis is interpretable, reproducible, and aligned with course topics.
+  </p>
+
+  <h2>Scope & Methods (What I will do)</h2>
+  <ul>
+    <li><strong>EDA & Visualization:</strong> price distribution (log), area–price scatter, box plots by neighborhood and overall quality, correlation heatmap.</li>
+    <li><strong>PCA:</strong> scree plot, 2-D PCA map colored by price band; interpret top loadings.</li>
+    <li><strong>Clustering:</strong> k-means on standardized numerics (K=2–8), select K by average silhouette; create plain-English cluster profiles (size, median price, typical area, common neighborhoods/quality).</li>
+    <li><strong>Association Rules:</strong> Apriori / FP-Growth on discretized features with RHS = {High, Low} price band; report top rules by lift with support & confidence.</li>
+  </ul>
+
+  <h2>What’s Out of Scope</h2>
+  <p>
+    Deep predictive modeling and text/NLP are <em>not</em> part of the graded scope. If time remains after meeting all
+    milestones, a minimal text snapshot may be posted separately as <em>future work</em>.
   </p>
 
   <h2>Milestones & Deliverables</h2>
   <ul>
-    <li><strong>Proposal:</strong> linked above (PDF).</li>
-    <li><strong>Checkpoint I:</strong> EDA, PCA plots, initial K selection, draft cluster profiles.</li>
-    <li><strong>Checkpoint II:</strong> association rules, refined clusters.</li>
-    <li><strong>Final:</strong> 9–11 page report, slides, and a reproducible repo with figures.</li>
+    <li><strong>Proposal:</strong> PDF above.</li>
+    <li><strong>Checkpoint I:</strong> EDA complete; PCA plots; initial K selection; draft cluster profiles.</li>
+    <li><strong>Checkpoint II:</strong> association rules complete; refined clusters; figures finalized.</li>
+    <li><strong>Final:</strong> 9–11 page report (IEEE two-column), slides, reproducible notebooks and figures in repo.</li>
   </ul>
 
-  <h2>Resources</h2>
+  <h2>Dataset</h2>
   <ul>
-    <li>Dataset (Kaggle): <a href="https://www.kaggle.com/competitions/house-prices-advanced-regression-techniques/data" target="_blank" rel="noopener">Ames Housing</a></li>
+    <li>Ames Housing (Kaggle): <a href="https://www.kaggle.com/competitions/house-prices-advanced-regression-techniques/data" target="_blank" rel="noopener">competition data page</a></li>
   </ul>
 
   <footer>
-    <p>Last updated: <!-- update the date when you commit --> September 2025</p>
+    <p>Last updated: September 2025 · Built with GitHub Pages</p>
   </footer>
+</main>
 </body>
 </html>
