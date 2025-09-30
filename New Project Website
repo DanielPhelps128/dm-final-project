@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DM Final Project — Daniel Phelps</title>
+  <style>
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;line-height:1.5;margin:2rem;max-width:880px}
+    header h1{margin:0 0 .25rem 0}
+    header p{margin:.25rem 0;color:#555}
+    .tag{background:#eef;border:1px solid #ccd;padding:.1rem .4rem;border-radius:.4rem;font-size:.85rem}
+    h2{margin-top:2rem}
+    ul{margin:.5rem 0 1.25rem 1.25rem}
+    a{color:#0645ad;text-decoration:none}
+    a:hover{text-decoration:underline}
+    footer{margin-top:2rem;color:#666;font-size:.9rem}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Predicting Housing Prices with Course Methods</h1>
+    <p><strong>Author:</strong> Daniel Phelps &middot; <a href="mailto:dphelps9693@floridapoly.edu">dphelps9693@floridapoly.edu</a></p>
+    <p>
+      <a class="tag" href="https://github.com/DanielPhelps128/dm-final-project" target="_blank" rel="noopener">GitHub Repo</a>
+      <!-- If you renamed the file to proposal.pdf, keep the first link; otherwise comment it and use the second. -->
+      <a class="tag" href="proposal.pdf" target="_blank" rel="noopener">Proposal (PDF)</a>
+      <!-- <a class="tag" href="Data%20Mining%20Project%20Proposal%20Daniel%20Phelps.pdf" target="_blank" rel="noopener">Proposal (PDF)</a> -->
+    </p>
+  </header>
+
+  <h2>Project Summary</h2>
+  <p>
+    This project uses the Ames Housing dataset to (1) run EDA and visualizations; (2) reduce dimensions with PCA;
+    (3) segment the market with k-means; and (4) mine association rules on discretized features to explain
+    <em>Low/Medium/High</em> price bands. The focus is on clarity and course-aligned methods.
+  </p>
+
+  <h2>Milestones & Deliverables</h2>
+  <ul>
+    <li><strong>Proposal:</strong> linked above (PDF).</li>
+    <li><strong>Checkpoint I:</strong> EDA, PCA plots, initial K selection, draft cluster profiles.</li>
+    <li><strong>Checkpoint II:</strong> association rules, refined clusters.</li>
+    <li><strong>Final:</strong> 9–11 page report, slides, and a reproducible repo with figures.</li>
+  </ul>
+
+  <h2>Resources</h2>
+  <ul>
+    <li>Dataset (Kaggle): <a href="https://www.kaggle.com/competitions/house-prices-advanced-regression-techniques/data" target="_blank" rel="noopener">Ames Housing</a></li>
+  </ul>
+
+  <footer>
+    <p>Last updated: <!-- update the date when you commit --> September 2025</p>
+  </footer>
+</body>
+</html>
