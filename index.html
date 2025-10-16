@@ -53,7 +53,7 @@
       <p>Author: <strong>Daniel Phelps</strong> • Email:
         <a href="mailto:dphelps9693@floridapoly.edu">dphelps9693@floridapoly.edu</a></p>
       <div class="pill-links">
-        <a id="pdfBtn" class="btn primary" href="#" target="_blank" rel="noopener">View Proposal (PDF)</a>
+        <a id="pdfBtn" class="btn primary" href="proposal.pdf" target="_blank" rel="noopener">View Proposal (PDF)</a>
         <a class="btn" href="https://github.com/DanielPhelps128/dm-final-project" target="_blank" rel="noopener">GitHub Repo</a>
         <a class="btn" href="https://www.kaggle.com/competitions/house-prices-advanced-regression-techniques/data" target="_blank" rel="noopener">Dataset (Kaggle)</a>
       </div>
@@ -97,8 +97,8 @@
 
     <section id="proposal">
       <h2>Proposal</h2>
-      <p id="pdfStatus" style="color:#9ca3af; font-size:14px; margin:0 0 10px 0">Loading proposal PDF…</p>
-      <iframe id="pdfFrame" src="" width="100%" height="720" title="Proposal PDF preview"></iframe>
+      <p id="pdfStatus" style="color:#9ca3af; font-size:14px; margin:0 0 10px 0">Loaded proposal: proposal.pdf</p>
+      <iframe id="pdfFrame" src="proposal.pdf#view=FitH" width="100%" height="720" title="Proposal PDF preview"></iframe>
     </section>
 
     <section id="contact">
@@ -113,40 +113,5 @@
     </footer>
   </main>
 
-  <script>
-    // Resilient PDF detection so links work even if the filename changes or has spaces
-    const candidates = [
-      "proposal.pdf",
-      "Proposal.pdf",
-      "PROPOSAL.pdf",
-      "DP%20Data%20Mining%20Project%20Proposal.pdf",
-      "DP Data Mining Project Proposal.pdf",
-      "Data%20Mining%20Project%20Proposal%20Daniel%20Phelps.pdf",
-      "Data Mining Project Proposal Daniel Phelps.pdf"
-    ];
-    async function findPDF() {
-      for (const path of candidates) {
-        try {
-          const res = await fetch(path, { method: "HEAD", cache: "no-store" });
-          if (res.ok) return path;
-        } catch(e) {}
-      }
-      return null;
-    }
-    (async () => {
-      const found = await findPDF();
-      const btn = document.getElementById("pdfBtn");
-      const ifr = document.getElementById("pdfFrame");
-      const status = document.getElementById("pdfStatus");
-      if (found) {
-        btn.href = found;
-        ifr.src = found + "#view=FitH";
-        status.textContent = "Loaded proposal: " + decodeURIComponent(found);
-      } else {
-        btn.removeAttribute("href");
-        status.textContent = "Could not find a proposal PDF. Place a PDF in the repo root named 'proposal.pdf' or keep your current filename—this page will auto-detect it.";
-      }
-    })();
-  </script>
-</body>
+  </body>
 </html>
