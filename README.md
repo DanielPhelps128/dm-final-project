@@ -1,9 +1,13 @@
 # dm-final-project — Data/Text Mining (Fall 2025)
 
 **Student:** Daniel Phelps  
+
 **Email:** dphelps9693@floridapoly.edu  
+
 **Live Site:** [https://danielphelps128.github.io/dm-final-project/ ](https://danielphelps128.github.io/dm-final-project/index_updated.html)
+
 **Proposal (PDF):** [`proposal.pdf`](./proposal.pdf)  
+
 **Repo:** https://github.com/DanielPhelps128/dm-final-project  
 
 ---
