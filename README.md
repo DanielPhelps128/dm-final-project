@@ -76,5 +76,3 @@ This provides a digestible interpretation of the housing market without fitting 
 - K-means identified three market segments with distinct size, price, age, and quality profiles.
 
 ---
-
-## Repo Structure
