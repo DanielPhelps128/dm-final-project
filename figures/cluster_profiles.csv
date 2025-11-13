@@ -1,0 +1,4 @@
+cluster,n,med_sale_price,med_log_price,med_gr_liv_area,med_overall_qual,med_total_bsmt_sf,med_garage_cars,med_year_built,med_tot_rms_abv_grd
+1,350,214000,5.330413773349191,1590.5,7,1517,2,2003,7
+2,416,200050,5.301138542150096,1922.5,7,912,2,1996,8
+3,694,130000,5.113943352306837,1118,5,882.5,1,1957,6
