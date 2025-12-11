@@ -33,12 +33,13 @@
     code{background:#0b1220; padding:2px 6px; border-radius:6px}
   </style>
 </head>
+
 <body>
   <header>
     <nav>
       <strong>Final Project</strong>
       <a href="#overview" class="active">Overview</a>
-      <a href="#proposal">Proposal</a>
+      <a href="#finalreport">Final Report</a>
       <a href="#methods">Methods</a>
       <a href="#results">Results</a>
       <a href="#milestones">Milestones</a>
@@ -53,10 +54,13 @@
       <h1>Predicting Housing Prices with Course Methods</h1>
       <p>Author: <strong>Daniel Phelps</strong> • Email:
         <a href="mailto:dphelps9693@floridapoly.edu">dphelps9693@floridapoly.edu</a></p>
+
       <div class="pill-links">
-        <a id="pdfBtn" class="btn primary" href="proposal.pdf" target="_blank" rel="noopener">View Proposal (PDF)</a>
+        <a id="pdfBtn" class="btn primary" href="Data Mining Final Report Daniel Phelps.pdf" target="_blank" rel="noopener">
+          View Final Report (PDF)
+        </a>
         <a class="btn" href="https://github.com/DanielPhelps128/dm-final-project" target="_blank" rel="noopener">GitHub Repo</a>
-        <a class="btn" href="https://www.kaggle.com/competitions/house-prices-advanced-regression-techniques/data" target="_blank" rel="noopener">Dataset (Kaggle)</a>
+        <a class="btn" href="https://www.kaggle.com/competitions/house-prices-advanced-regression-techniques/data" target="_blank">Dataset (Kaggle)</a>
       </div>
     </div>
 
@@ -65,7 +69,7 @@
       <p>
         This project analyzes the Ames Housing dataset using techniques from class to provide an interpretable, reproducible study.
         The final scope includes: <strong>(1)</strong> EDA and clear visualizations, <strong>(2)</strong> PCA to summarize structure,
-        and <strong>(3)</strong> k‑means clustering to form market segments. We intentionally stopped before advanced prediction
+        and <strong>(3)</strong> k-means clustering to form market segments. We intentionally stopped before advanced prediction
         so the results stay transparent and aligned with the course topics.
       </p>
     </section>
@@ -73,40 +77,51 @@
     <section id="methods">
       <h2>Scope & Methods</h2>
       <ul>
-        <li><strong>EDA & Visualization:</strong> price distribution (raw + log), area–price scatter, box plots by neighborhood and overall quality.</li>
-        <li><strong>PCA:</strong> scree plot, PC1–PC2 map (colored by price band / quality), and loading interpretation.</li>
-        <li><strong>Clustering:</strong> k‑means on standardized PCA scores; choose K by average silhouette; summarize segment profiles (size, quality, year built, price).</li>
+        <li><strong>EDA & Visualization:</strong> price distribution, scatterplots, box plots.</li>
+        <li><strong>PCA:</strong> scree plot, PC1–PC2 mapping, loading interpretation.</li>
+        <li><strong>Clustering:</strong> k-means on PCA scores; silhouette-based K selection; segment profiles.</li>
       </ul>
     </section>
 
     <section id="results">
       <h2>Key Results (Brief)</h2>
       <ul>
-        <li><strong>Drivers of value:</strong> above‑grade living area, overall quality, and age/amenities explain most variation in price.</li>
-        <li><strong>PCA:</strong> PC1 ≈ size/quality; PC2 ≈ layout/verticality. Price bands separate cleanly in PC space.</li>
-        <li><strong>Segments:</strong> three clusters emerge—entry, mid‑market, and premium—differing in size, quality, garage capacity, age, and median price.</li>
+        <li><strong>PC1 = size/quality gradient.</strong></li>
+        <li><strong>PC2 = layout/vertical structure.</strong></li>
+        <li><strong>Clusters:</strong> entry, mid-market, premium segments with clear price and quality differences.</li>
       </ul>
     </section>
 
     <section id="milestones">
       <h2>Milestones & Deliverables</h2>
       <ul>
-        <li><strong>Proposal:</strong> PDF below (updated).</li>
-        <li><strong>Checkpoint I:</strong> EDA + PCA complete; initial K choice; draft cluster profiles.</li>
-        <li><strong>Checkpoint II:</strong> expanded write‑up (Discussion, Conclusion, Future Work); polished figures.</li>
-        <li><strong>Final:</strong> 9–11 page report (IEEE two‑column), slides, reproducible code & figures in repo.</li>
+        <li><strong>Final Report:</strong> PDF below.</li>
+        <li><strong>Checkpoint I:</strong> EDA + PCA.</li>
+        <li><strong>Checkpoint II:</strong> clustering + discussion.</li>
+        <li><strong>Final:</strong> full report, slides, GitHub repo.</li>
       </ul>
     </section>
 
     <section id="dataset">
       <h2>Dataset</h2>
-      <p>Ames Housing (Kaggle): <a href="https://www.kaggle.com/competitions/house-prices-advanced-regression-techniques/data" target="_blank" rel="noopener">competition page</a></p>
+      <p>Ames Housing (Kaggle):  
+        <a href="https://www.kaggle.com/competitions/house-prices-advanced-regression-techniques/data" target="_blank">
+          competition page
+        </a>
+      </p>
     </section>
 
-    <section id="proposal">
-      <h2>Proposal</h2>
-      <p id="pdfStatus" style="color:#9ca3af; font-size:14px; margin:0 0 10px 0">Loaded proposal: proposal.pdf</p>
-      <iframe id="pdfFrame" src="proposal.pdf#view=FitH" width="100%" height="720" title="Proposal PDF preview"></iframe>
+    <section id="finalreport">
+      <h2>Final Report</h2>
+      <p id="pdfStatus" style="color:#9ca3af; font-size:14px;">Loaded report: Data Mining Final Report Daniel Phelps.pdf</p>
+
+      <iframe
+        id="pdfFrame"
+        src="Data Mining Final Report Daniel Phelps.pdf#view=FitH"
+        width="100%"
+        height="720"
+        title="Final Report PDF preview">
+      </iframe>
     </section>
 
     <section id="contact">
@@ -117,7 +132,8 @@
 
     <footer class="wrap">
       <small>© 2025 Daniel Phelps • Hosted with GitHub Pages • 
-        <a href="https://github.com/DanielPhelps128/dm-final-project" target="_blank">Repository</a></small>
+        <a href="https://github.com/DanielPhelps128/dm-final-project" target="_blank">Repository</a>
+      </small>
     </footer>
   </main>
 </body>
