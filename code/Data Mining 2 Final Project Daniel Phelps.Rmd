@@ -1,0 +1,509 @@
+---
+title: "Data Mining 2 Final Project Daniel Phelps"
+output:
+  html_document: default
+  pdf_document: default
+date: "2025-10-02"
+---
+
+```{r setup, include=FALSE}
+setwd("/Users/danielphelps/Downloads/Data Mining Final Project Daniel Phelps")
+```
+
+```{r}
+list.files()                 # should show 'data', 'figures', 'report', etc.
+
+dir.exists("data")           # TRUE?
+dir.exists("figures")        # TRUE? (we'll create it if not)
+```
+
+```{r}
+library(tidyverse)
+library(janitor)
+
+```
+
+```{r}
+root <- getwd()                                   # should be project root
+data_fp <- file.path(root, "data", "train.csv")   # data/train.csv
+```
+
+```{r}
+# 1) Read CSV and normalize column names
+df <- readr::read_csv(data_fp, show_col_types = FALSE) |>
+  clean_names()
+```
+
+```{r}
+# 2) Minimal checks
+cat("\nRows x Cols:", nrow(df), "x", ncol(df), "\n")
+stopifnot("sale_price" %in% names(df))
+stopifnot(is.numeric(df$sale_price))
+```
+
+```{r}
+# 3) Add log10 price for later (safe because sale_price > 0 in Ames)
+df <- df |> mutate(log_price = log10(sale_price))
+
+# 4) Quick peek
+cat("\nHead:\n"); print(head(df, 6))
+cat("\nColumns:\n"); print(names(df))
+```
+
+```{r}
+# 5) Missingness summary → CSV (for your report appendix)
+miss_tbl <- tibble(
+  variable    = names(df),
+  n_missing   = sapply(df, \(x) sum(is.na(x))),
+  pct_missing = round(100 * sapply(df, \(x) mean(is.na(x))), 2)
+) |> arrange(desc(pct_missing))
+
+readr::write_csv(miss_tbl, file.path("figures", "missingness_summary.csv"))
+cat("\nSaved: figures/missingness_summary.csv\n")
+
+# 6) SalePrice quick summaries (raw + log)
+cat("\nSalePrice (raw):\n"); print(summary(df$sale_price))
+cat("\nSalePrice (log10):\n"); print(summary(df$log_price))
+```
+
+
+```{r}
+# --- Step 2: Price distributions (linear + log) ---
+
+# install.packages(c("tidyverse","janitor"))  # run once if needed
+library(tidyverse); library(janitor)
+
+# Paths
+root <- getwd()
+data_fp <- file.path(root, "data", "train.csv")
+if (!dir.exists("figures")) dir.create("figures", recursive = TRUE)
+
+# Load
+df <- readr::read_csv(data_fp, show_col_types = FALSE) |>
+  clean_names() |>
+  mutate(log_price = log10(sale_price))
+
+# Figure 1: SalePrice (linear)
+p_lin <- ggplot(df, aes(sale_price)) +
+  geom_histogram(bins = 40, fill = "#94a3b8", color = "white") +
+  labs(title = "SalePrice (linear)", x = "SalePrice", y = "Count") +
+  scale_x_continuous(labels = scales::label_comma())
+
+p_lin
+
+ggsave("figures/01_hist_price_linear.png", p_lin,
+       width = 3.0, height = 2.2, dpi = 300, bg = "white")
+
+# Figure 2: SalePrice (log10)
+p_log <- ggplot(df, aes(log_price)) +
+  geom_histogram(bins = 40, fill = "#94a3b8", color = "white") +
+  labs(title = "SalePrice (log10)", x = "log10(SalePrice)", y = "Count")
+
+p_log
+
+ggsave("figures/02_hist_price_log.png", p_log,
+       width = 3.0, height = 2.2, dpi = 300, bg = "white")
+
+cat("Saved:\n - figures/01_hist_price_linear.png\n - figures/02_hist_price_log.png\n")
+
+```
+
+## Scatterplot — Living area vs. log-price
+
+```{r}
+library(tidyverse); library(janitor)
+
+df <- readr::read_csv(file.path(getwd(), "data", "train.csv"), show_col_types = FALSE) |>
+  clean_names() |>
+  mutate(log_price = log10(sale_price))
+
+# Show plot in RStudio and save a PNG for the report
+p <- ggplot(df, aes(gr_liv_area, log_price)) +
+  geom_point(alpha = 0.45, size = 1.2) +
+  geom_smooth(method = "loess", se = TRUE) +
+  labs(title = "Living Area vs log10(SalePrice)",
+       x = "Above-ground living area (sq ft)",
+       y = "log10(SalePrice)")
+
+print(p)  # shows in Plots pane
+if (!dir.exists("figures")) dir.create("figures")
+ggsave("figures/03_scatter_area_logprice.png", p,
+       width = 3.0, height = 2.3, dpi = 300, bg = "white")
+```
+
+## Boxplots — OverallQual vs. log10(SalePrice)
+
+```{r}
+# --- Boxplots: OverallQual vs. log10(SalePrice) ---
+
+library(tidyverse)
+library(janitor)
+
+root   <- getwd()
+data_fp <- file.path(root, "data", "train.csv")
+if (!dir.exists("figures")) dir.create("figures", recursive = TRUE)
+
+df <- readr::read_csv(data_fp, show_col_types = FALSE) |>
+  clean_names() |>
+  mutate(
+    overall_qual = as.factor(overall_qual),
+    log_price    = log10(sale_price)
+  )
+
+# Order quality levels by their median log price (nicer plotting order)
+qual_order <- df |>
+  group_by(overall_qual) |>
+  summarise(med = median(log_price, na.rm = TRUE), .groups = "drop") |>
+  arrange(med) |>
+  pull(overall_qual)
+
+df <- df |>
+  mutate(overall_qual = fct_relevel(overall_qual, as.character(qual_order)))
+
+# Summary table for appendix
+qual_tbl <- df |>
+  group_by(overall_qual) |>
+  summarise(
+    n = n(),
+    median_log_price = median(log_price, na.rm = TRUE),
+    iqr_log_price    = IQR(log_price, na.rm = TRUE),
+    median_price     = 10^median_log_price,
+    .groups = "drop"
+  )
+
+readr::write_csv(qual_tbl, file.path("figures", "summary_overallqual_prices.csv"))
+
+# Plot
+p_box_qual <- ggplot(df, aes(x = overall_qual, y = log_price)) +
+  geom_boxplot(outlier.alpha = 0.25, width = 0.6) +
+  labs(
+    title = "Price by Overall Quality",
+    subtitle = "log10(SalePrice) by OverallQual (higher = better materials/finish)",
+    x = "OverallQual (ordinal 1–10, as reported)",
+    y = "log10(SalePrice)"
+  ) +
+  theme_minimal(base_size = 12)
+
+p_box_qual          # show in RStudio
+
+ggsave(
+  filename = file.path("figures", "03_box_overallqual_logprice.png"),
+  plot = p_box_qual, width = 6.2, height = 4.0, dpi = 300, bg = "white"
+)
+cat("Saved: figures/03_box_overallqual_logprice.png\n")
+```
+
+## Boxplots — Neighborhood vs. log10(SalePrice)
+
+```{r}
+# --- Boxplots: Neighborhood vs. log10(SalePrice) ---
+
+df_nb <- df |>
+  mutate(neighborhood = as.factor(neighborhood))
+
+# Top 12 neighborhoods by sample size
+top_nb <- df_nb |>
+  count(neighborhood, sort = TRUE) |>
+  slice_head(n = 12) |>
+  pull(neighborhood)
+
+df_nb_top <- df_nb |>
+  filter(neighborhood %in% top_nb) |>
+  mutate(neighborhood = fct_reorder(neighborhood, log_price, median, .desc = FALSE))
+
+# Summary table for appendix (all neighborhoods)
+nb_tbl <- df_nb |>
+  group_by(neighborhood) |>
+  summarise(
+    n = n(),
+    median_log_price = median(log_price, na.rm = TRUE),
+    iqr_log_price    = IQR(log_price, na.rm = TRUE),
+    median_price     = 10^median_log_price,
+    .groups = "drop"
+  ) |>
+  arrange(desc(median_log_price))
+
+readr::write_csv(nb_tbl, file.path("figures", "summary_neighborhood_prices.csv"))
+
+# Plot top 12 neighborhoods
+p_box_nb <- ggplot(df_nb_top, aes(x = neighborhood, y = log_price)) +
+  geom_boxplot(outlier.alpha = 0.25, width = 0.6) +
+  labs(
+    title = "Price by Neighborhood (Top 12 by Count)",
+    subtitle = "log10(SalePrice); neighborhoods ordered by median price",
+    x = "Neighborhood",
+    y = "log10(SalePrice)"
+  ) +
+  coord_flip() +                    # horizontal labels for readability
+  theme_minimal(base_size = 12)
+
+p_box_nb                              # show in RStudio
+
+ggsave(
+  filename = file.path("figures", "04_box_neighborhood_top12_logprice.png"),
+  plot = p_box_nb, width = 7.2, height = 5.4, dpi = 300, bg = "white"
+)
+cat("Saved: figures/04_box_neighborhood_top12_logprice.png\n")
+
+```
+
+
+
+```{r}
+# --- PCA pipeline: Ames numeric features -> scree + PC1/PC2 maps + loadings ----
+# Packages
+suppressPackageStartupMessages({
+  library(tidyverse)
+  library(janitor)
+  library(forcats)
+})
+
+# Ensure figures/ exists
+if (!dir.exists("figures")) dir.create("figures", recursive = TRUE)
+
+# Load data if 'df' not already in memory
+if (!exists("df")) {
+  root    <- getwd()
+  data_fp <- file.path(root, "data", "train.csv")
+  df <- readr::read_csv(data_fp, show_col_types = FALSE) |>
+    clean_names() |>
+    mutate(log_price = log10(sale_price))
+}
+
+# -----------------------------
+# 1) Build numeric feature matrix for PCA
+#    - keep numeric predictors only
+#    - drop id/sale_price/log_price targets
+#    - median-impute remaining NAs (safe for PCA)
+# -----------------------------
+drop_cols <- c("id", "sale_price", "log_price")
+num_predictors <- df |>
+  select(where(is.numeric)) |>
+  select(-any_of(drop_cols))
+
+# Median impute (column-wise)
+num_imp <- num_predictors |>
+  mutate(across(everything(), ~ ifelse(is.na(.x), median(.x, na.rm = TRUE), .x)))
+
+# -----------------------------
+# 2) Run PCA on standardized data
+# -----------------------------
+pca <- prcomp(num_imp, center = TRUE, scale. = TRUE)
+
+# Variance explained (for scree plot / table)
+var_exp  <- pca$sdev^2
+var_prop <- var_exp / sum(var_exp)
+scree_tbl <- tibble(
+  PC   = paste0("PC", seq_along(var_prop)),
+  Var  = var_prop,
+  Cum  = cumsum(var_prop)
+)
+
+# Save variance explained table (nice for appendix)
+readr::write_csv(scree_tbl, "figures/pca_variance_explained.csv")
+
+# Scree plot (first 12 PCs for readability)
+plt_scree <- scree_tbl |>
+  slice(1:12) |>
+  mutate(PC_index = row_number()) |>
+  ggplot(aes(PC_index, Var)) +
+  geom_col(fill = "#94a3b8") +
+  geom_line(aes(y = Cum), linewidth = 1) +
+  geom_point(aes(y = Cum), size = 2) +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
+  scale_x_continuous(breaks = 1:12, labels = paste0("PC", 1:12)) +
+  labs(title = "PCA Scree Plot (first 12 PCs)",
+       x = "Principal Component",
+       y = "Variance Explained",
+       caption = "Bars = per-PC variance; line = cumulative variance") +
+  theme_minimal(base_size = 12)
+
+ggsave("figures/03_pca_scree.png", plt_scree, width = 6.5, height = 4.0, dpi = 300, bg = "white")
+
+# -----------------------------
+# 3) Scores + coloring helpers
+# -----------------------------
+scores <- as_tibble(pca$x, .name_repair = "minimal") |>
+  bind_cols(df |> select(log_price, overall_qual, neighborhood))
+
+# Price bands (Low/Med/High) by tertiles of log10 price
+cuts <- quantile(df$log_price, probs = c(0, 1/3, 2/3, 1), na.rm = TRUE)
+scores <- scores |>
+  mutate(price_band = cut(log_price, cuts, include.lowest = TRUE,
+                          labels = c("Low", "Medium", "High")),
+         overall_qual_f = factor(overall_qual,
+                                 levels = sort(unique(overall_qual)),
+                                 ordered = TRUE))
+
+# -----------------------------
+# 4) PC1 vs PC2 colored by price band
+# -----------------------------
+plt_pc_price <- scores |>
+  ggplot(aes(PC1, PC2, color = price_band)) +
+  geom_point(alpha = 0.6, size = 1.7) +
+  scale_color_manual(values = c("#60a5fa", "#f59e0b", "#ef4444")) +
+  labs(title = "PC1 vs PC2 colored by Price Band (log10)",
+       x = "PC1", y = "PC2", color = "Price Band") +
+  theme_minimal(base_size = 12)
+
+ggsave("figures/04_pca_scatter_priceband.png", plt_pc_price,
+       width = 6.8, height = 4.5, dpi = 300, bg = "white")
+
+# Optional: PC1 vs PC2 colored by OverallQual (ordered)
+plt_pc_qual <- scores |>
+  ggplot(aes(PC1, PC2, color = overall_qual_f)) +
+  geom_point(alpha = 0.6, size = 1.6) +
+  scale_color_viridis_d(option = "C", end = 0.9) +
+  labs(title = "PC1 vs PC2 colored by Overall Quality (1–10)",
+       x = "PC1", y = "PC2", color = "OverallQual") +
+  theme_minimal(base_size = 12)
+
+ggsave("figures/04b_pca_scatter_overallqual.png", plt_pc_qual,
+       width = 6.8, height = 4.5, dpi = 300, bg = "white")
+
+# -----------------------------
+# 5) Top loadings (which features define PC1 / PC2)
+# -----------------------------
+loadings <- as_tibble(pca$rotation, rownames = "variable")
+
+top_n_abs <- function(df, pc, n = 12) {
+  df |>
+    transmute(variable,
+              loading = .data[[pc]],
+              abs_loading = abs(.data[[pc]])) |>
+    arrange(desc(abs_loading)) |>
+    slice(1:n)
+}
+
+top_pc1 <- top_n_abs(loadings, "PC1", n = 12)
+top_pc2 <- top_n_abs(loadings, "PC2", n = 12)
+
+readr::write_csv(top_pc1, "figures/top_loadings_PC1.csv")
+readr::write_csv(top_pc2, "figures/top_loadings_PC2.csv")
+
+cat("\nSaved PCA artifacts to figures/:\n",
+    "- 03_pca_scree.png\n",
+    "- 04_pca_scatter_priceband.png\n",
+    "- 04b_pca_scatter_overallqual.png\n",
+    "- pca_variance_explained.csv\n",
+    "- top_loadings_PC1.csv, top_loadings_PC2.csv\n")
+
+```
+
+## K-Means Clusterings on PCA scores:
+
+```{r}
+# --- K-means on PCA space (saves plots & CSVs to figures/) ---
+
+library(tidyverse)
+library(janitor)
+library(cluster)   # silhouette()
+library(scales)
+
+# 0) Paths & data
+root   <- getwd()
+data_fp <- file.path(root, "data", "train.csv")
+if (!dir.exists("figures")) dir.create("figures", recursive = TRUE)
+
+df <- readr::read_csv(data_fp, show_col_types = FALSE) |>
+  clean_names() |>
+  mutate(
+    log_price   = log10(sale_price),
+    overall_qual = as.numeric(overall_qual)  # keep ordinal meaning
+  )
+
+# 1) Feature set for clustering (numeric only; no target)
+feat_vars <- c(
+  "gr_liv_area","total_bsmt_sf","x1st_flr_sf","x2nd_flr_sf",
+  "tot_rms_abv_grd","full_bath","half_bath",
+  "garage_cars","garage_area","year_built","overall_qual"
+)
+
+X <- df |>
+  select(any_of(feat_vars)) |>
+  mutate(across(everything(), as.numeric)) |>
+  drop_na()
+
+# Keep a row index to merge cluster labels back later
+keep_idx <- which(complete.cases(df[feat_vars]))
+df_keep  <- df[keep_idx, ]
+
+# 2) Standardize & PCA
+X_sc   <- scale(X)
+pca    <- prcomp(X_sc, center = FALSE, scale. = FALSE)
+pc_tbl <- as_tibble(pca$x)
+
+# retain first 8 PCs (tunable)
+pc_use <- pc_tbl |> select(1:8)
+
+# 3) K sweep 2..8 with SSE & silhouette
+set.seed(42)
+Ks <- 2:8
+res <- map_df(Ks, function(k){
+  km <- kmeans(pc_use, centers = k, nstart = 50, iter.max = 50)
+  sil <- silhouette(km$cluster, dist(pc_use))
+  tibble(
+    K = k,
+    tot_withinss = km$tot.withinss,
+    avg_sil = mean(sil[, "sil_width"])
+  )
+})
+
+# 4) Plots: elbow & silhouette
+p_elbow <- ggplot(res, aes(K, tot_withinss)) +
+  geom_line() + geom_point(size = 2) +
+  labs(title = "Elbow plot (PCA space)",
+       y = "Total within-cluster SSE", x = "K") +
+  theme_minimal(base_size = 13)
+
+p_sil <- ggplot(res, aes(K, avg_sil)) +
+  geom_line() + geom_point(size = 2) +
+  labs(title = "Average silhouette vs. K (PCA space)",
+       y = "Mean silhouette", x = "K") +
+  theme_minimal(base_size = 13)
+
+ggsave("figures/05_kmeans_elbow.png", p_elbow, width = 7, height = 4, dpi = 300, bg = "white")
+ggsave("figures/06_kmeans_silhouette.png", p_sil,  width = 7, height = 4, dpi = 300, bg = "white")
+
+# 5) Choose best K by silhouette, refit final model
+best_k <- res$K[which.max(res$avg_sil)]
+set.seed(42)
+km_final <- kmeans(pc_use, centers = best_k, nstart = 100, iter.max = 100)
+
+df_clustered <- df_keep |>
+  mutate(cluster = factor(km_final$cluster))
+
+# 6) Cluster profile table (medians; readable)
+profile_vars <- c("sale_price","log_price","gr_liv_area","overall_qual",
+                  "total_bsmt_sf","garage_cars","year_built","tot_rms_abv_grd")
+
+cluster_profiles <- df_clustered |>
+  group_by(cluster) |>
+  summarise(
+    n = n(),
+    across(all_of(profile_vars),
+           ~ median(., na.rm = TRUE), .names = "med_{.col}")
+  ) |>
+  arrange(cluster)
+
+readr::write_csv(cluster_profiles, "figures/cluster_profiles.csv")
+
+# 7) PC1–PC2 scatter colored by cluster
+pc12 <- pc_use |> select(PC1 = 1, PC2 = 2)
+plot_df <- bind_cols(pc12, cluster = df_clustered$cluster)
+
+p_pc <- ggplot(plot_df, aes(PC1, PC2, color = cluster)) +
+  geom_point(alpha = 0.6, size = 1.8) +
+  labs(title = paste0("K-means on PCA (K = ", best_k, ")"),
+       subtitle = "PC1 vs PC2 colored by cluster",
+       x = "PC1", y = "PC2") +
+  theme_minimal(base_size = 13) +
+  theme(legend.position = "right")
+
+ggsave("figures/08_kmeans_pc_scatter.png", p_pc, width = 7, height = 5, dpi = 300, bg = "white")
+
+cat("\nSaved:\n - figures/05_kmeans_elbow.png\n - figures/06_kmeans_silhouette.png\n",
+    " - figures/08_kmeans_pc_scatter.png\n - figures/cluster_profiles.csv\n")
+
+```
+
