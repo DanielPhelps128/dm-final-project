@@ -4,7 +4,7 @@
 
 **Email:** dphelps9693@floridapoly.edu  
 
-**Live Site:** [https://danielphelps128.github.io/dm-final-project/ ](https://danielphelps128.github.io/dm-final-project/index_updated.html)
+**Website:** [https://danielphelps128.github.io/dm-final-project/ ](https://danielphelps128.github.io/dm-final-project/index_updated.html)
 
 **Proposal (PDF):** [`proposal.pdf`](./proposal.pdf)  
 
